@@ -15,6 +15,8 @@ data class CopyFoodsV2Request(val foods: List<CopyFoodV2>)
 
 data class CopyLocalFoodsV2Request(val sourceLocale: String, val destLocale: String, val foods: List<CopyLocalV2>)
 
+data class LocalFoodCodesResponse(val localFoodCodes: List<String>)
+
 class FoodsController @Inject constructor(
     private val service: FoodsServiceV2,
     private val stringCodec: StringCodec,
@@ -75,6 +77,18 @@ class FoodsController @Inject constructor(
                 errorUtils.errorResponse(Status.BAD_REQUEST, "Category code is missing")
             else
                 Response(Status.OK).body(stringCodec.encode(service.getCategoryContents(categoryCode, localeId)))
+        }
+    }
+
+    fun getLocalFoodCodes(user: Intake24User, request: Request): Response {
+        return validateLocaleId(request) { localeId ->
+            Response(Status.OK).body(stringCodec.encode(LocalFoodCodesResponse(service.getLocalFoodCodes(localeId))))
+        }
+    }
+
+    fun getEnabledLocalFoodCodes(user: Intake24User, request: Request): Response {
+        return validateLocaleId(request) { localeId ->
+            Response(Status.OK).body(stringCodec.encode(LocalFoodCodesResponse(service.getEnabledLocalFoodCodes(localeId))))
         }
     }
 }

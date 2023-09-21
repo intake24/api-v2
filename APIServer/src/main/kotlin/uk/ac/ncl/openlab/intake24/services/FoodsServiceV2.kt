@@ -1038,6 +1038,26 @@ class FoodsServiceV2 @Inject() constructor(@Named("foods") private val foodDatab
         }
     }
 
+    fun getLocalFoodCodes(localeId: String): List<String> {
+        return foodDatabase.runTransaction { context ->
+            context.select(FOODS_LOCAL.FOOD_CODE)
+                .from(FOODS_LOCAL)
+                .where(FOODS_LOCAL.LOCALE_ID.eq(localeId))
+                .orderBy(FOODS_LOCAL.FOOD_CODE.asc())
+                .fetch(FOODS_LOCAL.FOOD_CODE)
+        }
+    }
+
+    fun getEnabledLocalFoodCodes(localeId: String): List<String> {
+        return foodDatabase.runTransaction { context ->
+            context.select(FOODS_LOCAL_LISTS.FOOD_CODE)
+                .from(FOODS_LOCAL_LISTS)
+                .where(FOODS_LOCAL_LISTS.LOCALE_ID.eq(localeId))
+                .orderBy(FOODS_LOCAL_LISTS.FOOD_CODE.asc())
+                .fetch(FOODS_LOCAL_LISTS.FOOD_CODE)
+        }
+    }
+
     fun copyCategoryPortionSizeMethods(sourceLocale: String, destLocale: String) {
         foodDatabase.runTransaction {
             validateLocaleId(sourceLocale, it)

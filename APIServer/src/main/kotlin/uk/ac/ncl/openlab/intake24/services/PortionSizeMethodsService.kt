@@ -3,11 +3,9 @@ package uk.ac.ncl.openlab.intake24.services
 import com.google.inject.Inject
 import com.google.inject.Singleton
 import com.google.inject.name.Named
-import org.jooq.DSLContext
 import org.slf4j.LoggerFactory
 import uk.ac.ncl.openlab.intake24.dbutils.DatabaseClient
 import uk.ac.ncl.openlab.intake24.foodsql.Tables
-import uk.ac.ncl.openlab.intake24.foodsql.Tables.LOCALES
 
 
 @Singleton
