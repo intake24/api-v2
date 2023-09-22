@@ -14,6 +14,7 @@ class FoodAdminRoutes @Inject() constructor(
     uksaUpdatePsmController: UKSAUpdatePsmController,
     foodFrequencyStatsController: FoodFrequencyStatsController,
     nutrientMappingController: NutrientMappingController,
+    portionSizeRoutes: PortionSizeRoutes,
     security: Security
 ) {
 
@@ -51,6 +52,8 @@ class FoodAdminRoutes @Inject() constructor(
             "/update-uk-sa-psm" bind Method.POST to security.allowFoodAdmins(uksaUpdatePsmController::updatePortionSizes),
             "/frequencies" bind Method.POST to security.allowFoodAdmins(foodFrequencyStatsController::exportFrequencies),
             "/{localeId}/export-mapping" bind Method.POST to security.check(::canReadLocalFoods, nutrientMappingController::exportMapping),
-            "/copy-category-psm" bind Method.POST to security.allowFoodAdmins(foodsController::copyCategoryPortionSizeMethods)
+            "/copy-category-psm" bind Method.POST to security.allowFoodAdmins(foodsController::copyCategoryPortionSizeMethods),
+
+            portionSizeRoutes.router.withBasePath("/portion-size")
         )
 }
