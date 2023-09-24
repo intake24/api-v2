@@ -27,4 +27,19 @@ class PortionSizeController @Inject constructor(
                 return Response(Status.OK).body(stringCodec.encode(imageMap))
         }
     }
+
+    fun exportDrinkwareSet(user: Intake24User, request: Request): Response {
+        val drinkwareSetId = request.path("drinkwareId")
+
+        if (drinkwareSetId == null)
+            return Response(Status.BAD_REQUEST)
+        else {
+            val drinkwareSet = portionSizeMethodsService.exportDrinkwareSet(drinkwareSetId)
+
+            if (drinkwareSet == null)
+                return Response(Status.NOT_FOUND)
+            else
+                return Response(Status.OK).body(stringCodec.encode(drinkwareSet))
+        }
+    }
 }

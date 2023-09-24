@@ -12,5 +12,6 @@ class PortionSizeRoutes @Inject() constructor(
 
     val router = routes(
         "/image-maps/{imageMapId}/export" bind Method.GET to security.allowFoodAdmins(portionSizeController::exportImageMap),
+        "/drinkware/{drinkwareId}/export" bind Method.GET to security.allowFoodAdmins(portionSizeController::exportDrinkwareSet),
     )
 }
