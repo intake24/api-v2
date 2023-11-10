@@ -7,7 +7,7 @@ import org.slf4j.LoggerFactory
 import uk.ac.ncl.openlab.intake24.dbutils.DatabaseClient
 import uk.ac.ncl.openlab.intake24.foodsql.Tables.*;
 
-data class ImageMapObject(val id: Int, val description: String, val outlineCoordinates: List<Double>)
+data class ImageMapObject(val id: Int, val description: String, val navigationIndex: Int, val outlineCoordinates: List<Double>)
 
 data class PortableImageMap(val description: String, val baseImagePath: String, val objects: List<ImageMapObject>)
 
@@ -53,12 +53,22 @@ class PortionSizeMethodsService @Inject() constructor(@Named("foods") private va
     fun exportImageMap(imageMapId: String): PortableImageMap? {
         return foodDatabase.runTransaction {
 
-            val objects = it.select(IMAGE_MAP_OBJECTS.ID, IMAGE_MAP_OBJECTS.DESCRIPTION, IMAGE_MAP_OBJECTS.OUTLINE_COORDINATES)
+            val objects = it.select(
+                IMAGE_MAP_OBJECTS.ID,
+                IMAGE_MAP_OBJECTS.DESCRIPTION,
+                IMAGE_MAP_OBJECTS.NAVIGATION_INDEX,
+                IMAGE_MAP_OBJECTS.OUTLINE_COORDINATES
+            )
                 .from(IMAGE_MAP_OBJECTS)
                 .where(IMAGE_MAP_OBJECTS.IMAGE_MAP_ID.eq(imageMapId))
                 .orderBy(IMAGE_MAP_OBJECTS.ID)
                 .fetch {
-                    ImageMapObject(it[IMAGE_MAP_OBJECTS.ID], it[IMAGE_MAP_OBJECTS.DESCRIPTION], it[IMAGE_MAP_OBJECTS.OUTLINE_COORDINATES].toList())
+                    ImageMapObject(
+                        it[IMAGE_MAP_OBJECTS.ID],
+                        it[IMAGE_MAP_OBJECTS.DESCRIPTION],
+                        it[IMAGE_MAP_OBJECTS.NAVIGATION_INDEX],
+                        it[IMAGE_MAP_OBJECTS.OUTLINE_COORDINATES].toList()
+                    )
                 }
 
             it.select(IMAGE_MAPS.DESCRIPTION, SOURCE_IMAGES.PATH)

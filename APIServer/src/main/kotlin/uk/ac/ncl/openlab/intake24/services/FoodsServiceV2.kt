@@ -1100,4 +1100,10 @@ class FoodsServiceV2 @Inject() constructor(@Named("foods") private val foodDatab
         }.execute()
     }
 
+    /* Helper method for package export tool */
+    fun getAllCategoryCodes(): List<String> {
+        return foodDatabase.runTransaction { context ->
+            context.select(CATEGORIES.CODE).from(CATEGORIES).orderBy(CATEGORIES.CODE).fetch(CATEGORIES.CODE)
+        }
+    }
 }

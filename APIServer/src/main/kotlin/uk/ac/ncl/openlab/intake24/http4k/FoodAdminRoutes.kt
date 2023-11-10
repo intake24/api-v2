@@ -40,6 +40,7 @@ class FoodAdminRoutes @Inject() constructor(
         routes(
             "/{localeId}/local-food-codes" bind Method.GET to security.check(::canReadLocalFoods, foodsController::getLocalFoodCodes),
             "/{localeId}/enabled-local-food-codes" bind Method.GET to security.check(::canReadLocalFoods, foodsController::getEnabledLocalFoodCodes),
+            "/all-category-codes" bind Method.GET to security.allowFoodAdmins(foodsController::getAllCategoryCodes),
             "/{localeId}/root-categories" bind Method.GET to security.check(::canReadLocalFoods, foodsController::getRootCategories),
             "/{localeId}/uncategorised-foods" bind Method.GET to security.check(::canReadLocalFoods, foodsController::getUncategorisedFoods),
             "/{localeId}/categories/{category}/contents" bind Method.GET to security.check(::canReadLocalFoods, foodsController::getCategoryContents),

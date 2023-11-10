@@ -62,6 +62,10 @@ class FoodsController @Inject constructor(
         }
     }
 
+    fun getAllCategoryCodes(user: Intake24User, request: Request): Response {
+        return Response(Status.OK).body(stringCodec.encode(service.getAllCategoryCodes()))
+    }
+
     fun getUncategorisedFoods(user: Intake24User, request: Request): Response {
         return validateLocaleId(request) {
             Response(Status.OK).body(stringCodec.encode(service.getUncategorisedFoods(it)))
